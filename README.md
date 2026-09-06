@@ -10,6 +10,18 @@ Whether you are evaluating a career pivot, modeling business expansion, or balan
 
 ---
 
+## 📸 Visual Workflow & Interface
+
+The screenshot below demonstrates the core split-pane workflow: configure parameters, live scores, and weights in the interactive studio on the right, and compile non-destructive, human-readable Markdown notes directly into your vault on the left.
+
+![Payoff Ledger Split-View Workflow](preview.png)
+
+### What You See:
+- **Left (Markdown Reading View):** The compiled, theme-native ledger report with clean badges, preserved formatting, and zero `line-through` artifacts.
+- **Right (Active Decision Studio):** The isolated, dark-mode canvas featuring dynamic parameter toggles, decimal precision controls, and real-time category balance summation.
+
+---
+
 ## 💡 The Core Problem It Solves
 
 Traditional task managers and decision tools evaluate choices in isolation (e.g., simple pro/con lists). They fail to model systems where:
