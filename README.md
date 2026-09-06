@@ -13,8 +13,10 @@ Because every user's needs are different, **Payoff Ledger imposes zero rigid str
 ## 📸 Visual Workflow & Fully Editable Interface
 
 Configure your ledger dimensions, toggle parameters, and let the plugin calculate net outcomes. Compile non-destructive, theme-native Markdown notes directly into your vault.
-
+now
 ![Payoff Ledger Split-View Workflow](preview1.png)
+
+then
 ![Payoff Ledger Split-View Workflow](preview.png)
 
 ---
