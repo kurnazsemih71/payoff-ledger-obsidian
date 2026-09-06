@@ -1,0 +1,300 @@
+:root {
+  --ea-bg: #0d1117;
+  --ea-card-bg: #161b22;
+  --ea-card-border: #30363d;
+  --ea-item-bg: #21262d;
+  --ea-text-main: #ffffff;
+  --ea-text-sub: #8b949e;
+  --ea-green: #3fb950;
+  --ea-green-bg: rgba(46, 160, 67, 0.2);
+  --ea-green-border: #3fb950;
+  --ea-red: #f85149;
+  --ea-red-bg: rgba(248, 81, 73, 0.2);
+  --ea-red-border: #f85149;
+  --ea-blue: #58a6ff;
+}
+
+.ea-container-isolated {
+  background-color: var(--ea-bg) !important;
+  color: var(--ea-text-main) !important;
+  padding: 24px !important;
+  border-radius: 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.ea-container-isolated * {
+  box-sizing: border-box !important;
+}
+
+/* Genel Odaklanma (Focus) Efekti - Beyazımsı/Açık Mavi Çerçeve */
+.ea-container-isolated input:focus,
+.ea-container-isolated textarea:focus {
+  outline: none !important;
+  border-color: #58a6ff !important;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.45) !important;
+}
+
+.ea-header-input {
+  width: 100%;
+  background: var(--ea-card-bg);
+  border: 1px solid var(--ea-card-border);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+/* Evrim Ağacı Kartı */
+.ea-card {
+  background-color: var(--ea-card-bg) !important;
+  border: 1px solid var(--ea-card-border) !important;
+  border-radius: 16px !important;
+  padding: 22px !important;
+  margin-bottom: 22px !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+.ea-card-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+.ea-step-badge {
+  background: var(--ea-item-bg) !important;
+  border: 1.5px solid var(--ea-green) !important;
+  color: var(--ea-green) !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+  font-size: 1rem !important;
+  flex-shrink: 0 !important;
+  margin-top: 2px !important;
+}
+
+/* Kart Başlığı (Taşmayan ve Aşağı Kayan Dinamik Alan) */
+.ea-title-area {
+  flex: 1 !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  resize: none !important;
+  outline: none !important;
+  font-family: inherit !important;
+  height: auto !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  display: block !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  transition: all 0.15s ease !important;
+}
+
+.ea-col-labels {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  color: var(--ea-text-sub) !important;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.14em !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid var(--ea-card-border) !important;
+  margin-bottom: 10px !important;
+}
+
+/* Parametre Satırı (Onmouseover ve Tam Hizalama) */
+.ea-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 8px 12px !important;
+  background: var(--ea-item-bg) !important;
+  border: 1px solid var(--ea-card-border) !important;
+  border-radius: 10px !important;
+  margin-bottom: 8px !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+}
+
+.ea-row:hover {
+  border-color: #58a6ff !important;
+}
+
+.ea-checkbox {
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer !important;
+  accent-color: var(--ea-green) !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  align-self: center !important;
+}
+
+/* Dinamik Aşağı Kayan Parametre Metni */
+.ea-text-area {
+  flex: 1 !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  font-size: 0.95rem !important;
+  line-height: 1.4 !important;
+  resize: none !important;
+  outline: none !important;
+  font-family: inherit !important;
+  height: auto !important;
+  min-height: 22px !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  display: block !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  transition: all 0.15s ease !important;
+}
+
+.ea-pill {
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  font-weight: 800 !important;
+  font-size: 0.92rem !important;
+  text-align: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  width: 58px !important;
+  border: 1px solid transparent !important;
+  transition: all 0.15s ease !important;
+}
+
+.ea-pill-green {
+  background: var(--ea-green-bg) !important;
+  color: #56d364 !important;
+  border-color: var(--ea-green-border) !important;
+}
+
+.ea-pill-red {
+  background: var(--ea-red-bg) !important;
+  color: #ff7b72 !important;
+  border-color: var(--ea-red-border) !important;
+}
+
+/* × ve + Butonları (Okunabilir, Hızlı Animasyonlu ve Parametre Hover Efektli) */
+.ea-btn-action {
+  background: var(--ea-item-bg) !important;
+  border: 1px solid var(--ea-card-border) !important;
+  color: var(--ea-text-sub) !important;
+  cursor: pointer !important;
+  font-size: 1.1rem !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease !important;
+}
+
+.ea-btn-action:hover {
+  border-color: #58a6ff !important;
+  color: #ffffff !important;
+  background: rgba(88, 166, 255, 0.1) !important;
+}
+
+.ea-btn-action.btn-del:hover {
+  border-color: var(--ea-red) !important;
+  color: var(--ea-red) !important;
+  background: rgba(248, 81, 73, 0.12) !important;
+}
+
+/* Alt Toplam Barı */
+.ea-total-bar {
+  margin-top: 18px !important;
+  background: #0d1117 !important;
+  border: 1.5px solid var(--ea-card-border) !important;
+  border-radius: 12px !important;
+  padding: 12px 18px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.ea-total-pill {
+  font-size: 1.25rem !important;
+  font-weight: 900 !important;
+  padding: 6px 20px !important;
+  border-radius: 12px !important;
+}
+
+/* Matris Tablosu */
+.ea-matrix-table {
+  width: 100% !important;
+  border-spacing: 12px !important;
+  border-collapse: separate !important;
+  margin-top: 14px !important;
+}
+
+.ea-matrix-th {
+  background: var(--ea-item-bg) !important;
+  color: var(--ea-text-sub) !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  border: 1px solid var(--ea-card-border) !important;
+}
+
+.ea-matrix-cell {
+  background: #0d1117 !important;
+  border: 2px solid var(--ea-card-border) !important;
+  border-radius: 14px !important;
+  padding: 18px 8px !important;
+  text-align: center !important;
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.ea-matrix-cell:hover {
+  border-color: #58a6ff !important;
+}
+
+.ea-matrix-cell.selected-nash {
+  border-color: var(--ea-green) !important;
+  background: rgba(46, 160, 67, 0.15) !important;
+  box-shadow: 0 0 16px rgba(46, 160, 67, 0.35) !important;
+}
+
+/* Para Birimi / Birim Dropdown Stili */
+.ea-unit-select {
+  background: var(--ea-card-bg) !important;
+  color: var(--ea-text-main) !important;
+  border: 1px solid var(--ea-card-border) !important;
+  border-radius: 8px !important;
+  padding: 4px 6px !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  outline: none !important;
+  transition: border-color 0.15s ease !important;
+}
+
+.ea-unit-select:focus,
+.ea-unit-select:hover {
+  border-color: var(--ea-green) !important;
+}

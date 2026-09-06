@@ -1,0 +1,9 @@
+{
+  "id": "game-theory-matrix",
+  "name": "Game Theory Decision Engine",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Discord temalı, dinamik N x M Payoff Matrisi ve Stratejik Karar Motoru",
+  "author": "Semih",
+  "isDesktopOnly": false
+}
