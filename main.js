@@ -2,58 +2,141 @@ const { Plugin, ItemView, Notice } = require('obsidian');
 
 const VIEW_TYPE_GAME_THEORY = "game-theory-decision-engine";
 
-// Menüde uzun ad, arayüzde sadece sembol
-const CURRENCY_OPTIONS = [
-  { label: "Döviz", symbol: "" },
-  { label: "₺ - TL", symbol: "₺" },
-  { label: "$ - Dolar", symbol: "$" },
-  { label: "€ - Euro", symbol: "€" },
-  { label: "£ - Pound", symbol: "£" }
-];
-
-const DEFAULT_STATE = {
-  title: "Stratejik Karar ve Oyun Teorisi Analizi",
-  unitSymbol: "",
-  categories: [
-    {
-      id: "c1",
-      title: "Büyük bir muhalefet partisi olmanın mevcut kurumsal getirileri",
-      totalLabel: "Temel kurumsal getiri",
-      isPositive: true,
-      items: [
-        { label: "Kamu finansmanı ve parti kaynakları", score: 2, enabled: true },
-        { label: "Parlamento üyelikleri, personel ve komisyon imkânları", score: 1, enabled: true },
-        { label: "Aday belirleme ve kendi parti örgütü üzerindeki kontrol", score: 1, enabled: true },
-        { label: "Belediyeler ve yerel yönetim kaynakları", score: 1, enabled: true },
-        { label: "Medya görünürlüğü, siyasi statü ve gündemde kalma", score: 1.35, enabled: true }
-      ]
-    },
-    {
-      id: "c2",
-      title: "İktidara oynama stratejisinin potansiyel getirisi",
-      totalLabel: "Beklenen siyasi getiri",
-      isPositive: true,
-      items: [
-        { label: "İktidarı kazanma ihtimalinin beklenen siyasi getirisi", score: 5, enabled: true }
-      ]
-    },
-    {
-      id: "c3",
-      title: "Diğer muhalefet partisi M'de kalırken tek başına İ stratejisine geçmenin maliyetleri",
-      totalLabel: "Toplam maliyet",
-      isPositive: false,
-      items: [
-        { label: "Mevcut liderlik ve parti içi güç dengelerini değiştirme riski", score: -2, enabled: true },
-        { label: "Çekirdek seçmeni rahatsız edebilecek ideolojik yeniden konumlanma", score: -1, enabled: true },
-        { label: "Yeni seçmen gruplarına ulaşmak için parti kimliğini genişletme", score: -1, enabled: true },
-        { label: "Mevcut kadrolar yerine daha seçilebilir yeni adaylara alan açma", score: -1, enabled: true },
-        { label: "Mevcut parti elitlerinin makam, adaylık ve örgütsel nüfuz kaybetme riski", score: -2, enabled: true }
-      ]
-    }
-  ],
-  strategies: ["M", "İ"],
-  opponents: ["M", "İ"],
-  selectedCell: "0-0"
+const TRANSLATIONS = {
+  tr: {
+    title: "Stratejik Değerleme ve Karar Matrisi",
+    newCategory: "+ Yeni Kategori Kartı Ekle",
+    saveBtn: "Şablonu Kaydet",
+    savedNotice: "Şablon başarıyla kaydedildi:",
+    clearBtn: "Boş Tuval",
+    templateBtn: "Şablonu Yükle",
+    unitLabel: "DEĞER",
+    scoreLabel: "PUAN",
+    advLabel: "STRATEJİK AVANTAJLAR",
+    costLabel: "DÖNÜŞÜM VE RİSK MALİYETLERİ",
+    newParamPlaceholder: "Yeni parametre...",
+    totalDefault: "Toplam",
+    matrixTitle: "İki Oyunculu Stratejik Getiri Matrisi",
+    matrixSub: "Her hücre: (Senin Getirin , Dış Faktörün / Rakibin Getirisi)",
+    addStrat: "+ Satır Ekle",
+    addOpp: "+ Sütun Ekle",
+    p1Legend: "Senin Net Getirin",
+    p2Legend: "Dış Faktörün Getirisi",
+    matrixFootnote: "Analizdeki getiri dengesi ve maliyetler Payoff Ledger Motoru ile hesaplanmıştır.",
+    currencies: [
+      { label: "Döviz", symbol: "" },
+      { label: "₺ - TL", symbol: "₺" },
+      { label: "$ - Dolar", symbol: "$" },
+      { label: "€ - Euro", symbol: "€" },
+      { label: "£ - Pound", symbol: "£" }
+    ],
+    defaultCategories: [
+      {
+        id: "c1",
+        title: "Mevcut Yapıyı ve Nakit Akışını Korumanın Garantili Getirileri (Status Quo)",
+        totalLabel: "Temel Güvence Getirisi",
+        isPositive: true,
+        items: [
+          { label: "Öngörülebilir nakit akışı ve risksiz gelir güvencesi", score: 2.5, enabled: true },
+          { label: "Düşük bilişsel stres, yerleşik rutinler ve operasyonel konfor", score: 1.5, enabled: true },
+          { label: "Mevcut kaynaklar, müşteri tabanı ve pazar payı üzerindeki tam kontrol", score: 1.25, enabled: true },
+          { label: "Sermaye kaybı veya başarısızlık baskısı taşımama avantajı", score: 1.1, enabled: true }
+        ]
+      },
+      {
+        id: "c2",
+        title: "Büyük Atılım ve Yenilik Hamlesinin Beklenen Değeri (Expansion Upside)",
+        totalLabel: "Beklenen Stratejik Getiri",
+        isPositive: true,
+        items: [
+          { label: "Pazarda asimetrik büyüme ve çarpan etkisiyle ölçeklenme potansiyeli", score: 5.5, enabled: true },
+          { label: "Sektörel otorite, marka değeri ve rekabet avantajı edinimi", score: 3.0, enabled: true },
+          { label: "Yeni teknik yetkinlikler ve uzun vadeli finansal özgürlük", score: 2.5, enabled: true }
+        ]
+      },
+      {
+        id: "c3",
+        title: "Dönüşüm Sürecinin Başlangıç Maliyetleri ve Riskleri (Transition Friction)",
+        totalLabel: "Toplam Sürtünme Maliyeti",
+        isPositive: false,
+        items: [
+          { label: "Doğrudan sermaye tahsisi, operasyonel harcamalar ve likidite riski", score: -2.5, enabled: true },
+          { label: "Zaman fedakarlığı, yoğun çalışma temposu ve tükenmişlik baskısı", score: -2.0, enabled: true },
+          { label: "Öğrenme eğrisi zorluğu ve geçiş sürecindeki verimsizlik sürtünmesi", score: -1.5, enabled: true },
+          { label: "Pazarın beklenmeyen reaksiyonu veya geçici itibar kaybı riski", score: -1.0, enabled: true }
+        ]
+      }
+    ],
+    strategies: ["Mevcudu Koru (Status Quo)", "Büyük Atılım (Aggressive Move)"],
+    opponents: ["Durgun Pazar (Passive)", "Büyüyen Pazar (Dynamic)"]
+  },
+  en: {
+    title: "Strategic Valuation & Decision Matrix",
+    newCategory: "+ Add New Dimension Card",
+    saveBtn: "Save Ledger",
+    savedNotice: "Ledger saved successfully:",
+    clearBtn: "Blank Canvas",
+    templateBtn: "Load Template",
+    unitLabel: "VALUE",
+    scoreLabel: "SCORE",
+    advLabel: "STRATEGIC ADVANTAGES",
+    costLabel: "TRANSITION & RISK COSTS",
+    newParamPlaceholder: "New parameter...",
+    totalDefault: "Total",
+    matrixTitle: "Two-Player Strategic Payoff Matrix",
+    matrixSub: "Each cell: (Your Payoff , External Factor / Competitor Payoff)",
+    addStrat: "+ Add Row",
+    addOpp: "+ Add Column",
+    p1Legend: "Your Net Payoff",
+    p2Legend: "External Factor Payoff",
+    matrixFootnote: "Equilibrium balances and friction costs simulated via Payoff Ledger.",
+    currencies: [
+      { label: "Assets", symbol: "" },
+      { label: "$ - USD", symbol: "$" },
+      { label: "€ - EUR", symbol: "€" },
+      { label: "£ - GBP", symbol: "£" },
+      { label: "₺ - TRY", symbol: "₺" }
+    ],
+    defaultCategories: [
+      {
+        id: "c1",
+        title: "Guaranteed Institutional Returns of Maintaining Status Quo",
+        totalLabel: "Core Guaranteed Return",
+        isPositive: true,
+        items: [
+          { label: "Predictable revenue streams and zero-risk cash preservation", score: 2.5, enabled: true },
+          { label: "Low cognitive friction, established workflows, and routine comfort", score: 1.5, enabled: true },
+          { label: "Complete governance over existing assets and user base", score: 1.25, enabled: true },
+          { label: "Zero exposure to capital depletion or public failure", score: 1.1, enabled: true }
+        ]
+      },
+      {
+        id: "c2",
+        title: "Expected Strategic Upside of Aggressive Expansion",
+        totalLabel: "Expected Strategic Upside",
+        isPositive: true,
+        items: [
+          { label: "Asymmetric market scalability and compounding financial upside", score: 5.5, enabled: true },
+          { label: "Brand equity appreciation and high barrier-to-entry dominance", score: 3.0, enabled: true },
+          { label: "Long-term technological independence and strategic leverage", score: 2.5, enabled: true }
+        ]
+      },
+      {
+        id: "c3",
+        title: "Upfront Friction and Transformation Costs",
+        totalLabel: "Total Friction Cost",
+        isPositive: false,
+        items: [
+          { label: "Direct capital expenditure, liquidity lock-up, and financial exposure", score: -2.5, enabled: true },
+          { label: "Severe time allocation, cognitive burnout, and personal sacrifice", score: -2.0, enabled: true },
+          { label: "Steep learning curve and temporary operational disruption", score: -1.5, enabled: true },
+          { label: "Market resistance, adverse macro shifts, and execution risk", score: -1.0, enabled: true }
+        ]
+      }
+    ],
+    strategies: ["Status Quo (Maintain)", "Strategic Expansion (Advance)"],
+    opponents: ["Stagnant Market (Passive)", "Booming Market (Dynamic)"]
+  }
 };
 
 function autoResize(el) {
@@ -71,6 +154,7 @@ function formatScore(score, symbol) {
 }
 
 function renderCardsDOM(container, state, isInteractive = false, onStateChange = null) {
+  const t = TRANSLATIONS[state.lang || 'tr'];
   const root = container.createDiv({ cls: "ea-container-isolated" });
 
   if (!isInteractive) {
@@ -101,8 +185,8 @@ function renderCardsDOM(container, state, isInteractive = false, onStateChange =
 
     // Başlık Şeridi
     const labels = card.createDiv({ cls: "ea-col-labels" });
-    labels.createSpan({ text: cat.isPositive ? "AVANTAJ" : "DÖNÜŞÜM MALİYETİ" });
-    labels.createSpan({ text: state.unitSymbol ? `DEĞER (${state.unitSymbol})` : "PUAN" });
+    labels.createSpan({ text: cat.isPositive ? t.advLabel : t.costLabel });
+    labels.createSpan({ text: state.unitSymbol ? `${t.unitLabel} (${state.unitSymbol})` : t.scoreLabel });
 
     // Maddeler Listesi
     const list = card.createDiv();
@@ -145,7 +229,7 @@ function renderCardsDOM(container, state, isInteractive = false, onStateChange =
     if (isInteractive) {
       const addRow = card.createDiv({ attr: { style: "display:flex; gap:10px; margin-top:12px;" } });
       const txt = addRow.createEl("input", { 
-        placeholder: "Yeni parametre...", 
+        placeholder: t.newParamPlaceholder, 
         attr: { style: "flex:1; background:#0d1117; border:1px solid var(--ea-card-border); color:#fff; padding:8px 12px; border-radius:8px;" } 
       });
       const scr = addRow.createEl("input", { 
@@ -176,10 +260,10 @@ function renderCardsDOM(container, state, isInteractive = false, onStateChange =
       const tInp = totalBar.createEl("input", { 
         attr: { style: "font-size:1.05rem; font-weight:700; background:transparent; border:1px solid transparent; color:#fff; border-radius:6px; padding:4px;" } 
       });
-      tInp.value = cat.totalLabel || "Toplam";
+      tInp.value = cat.totalLabel || t.totalDefault;
       tInp.onchange = (e) => { cat.totalLabel = e.target.value; onStateChange(); };
     } else {
-      totalBar.createSpan({ text: cat.totalLabel || "Toplam", attr: { style: "font-weight:700; color:#fff; font-size:1.05rem;" } });
+      totalBar.createSpan({ text: cat.totalLabel || t.totalDefault, attr: { style: "font-weight:700; color:#fff; font-size:1.05rem;" } });
     }
 
     const tPill = totalBar.createSpan({ 
@@ -192,20 +276,20 @@ function renderCardsDOM(container, state, isInteractive = false, onStateChange =
   const mCard = root.createDiv({ cls: "ea-card" });
   const mHead = mCard.createDiv({ attr: { style: "display:flex; align-items:center; gap:10px; margin-bottom:6px;" } });
   mHead.createSpan({ attr: { style: "width:4px; height:22px; background:var(--ea-green); border-radius:2px;" } });
-  mHead.createEl("h3", { text: "İki oyunculu tam payoff matrix", attr: { style: "margin:0; color:#fff; font-size:1.2rem;" } });
-  mCard.createDiv({ text: "Her hücre: (Oyuncu 1'in getirisi, Oyuncu 2'nin getirisi)", attr: { style: "color:var(--ea-text-sub); font-size:0.85rem; margin-bottom:14px;" } });
+  mHead.createEl("h3", { text: t.matrixTitle, attr: { style: "margin:0; color:#fff; font-size:1.2rem;" } });
+  mCard.createDiv({ text: t.matrixSub, attr: { style: "color:var(--ea-text-sub); font-size:0.85rem; margin-bottom:14px;" } });
 
   if (isInteractive) {
     const btnRow = mCard.createDiv({ attr: { style: "display:flex; gap:8px; margin-bottom:12px;" } });
-    const rBtn = btnRow.createEl("button", { text: "+ Satır Ekle", attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:6px 12px; border-radius:6px; cursor:pointer;" } });
-    rBtn.onclick = () => { state.strategies.push(`Strateji ${state.strategies.length + 1}`); onStateChange(); };
-    const cBtn = btnRow.createEl("button", { text: "+ Sütun Ekle", attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:6px 12px; border-radius:6px; cursor:pointer;" } });
-    cBtn.onclick = () => { state.opponents.push(`Durum ${state.opponents.length + 1}`); onStateChange(); };
+    const rBtn = btnRow.createEl("button", { text: t.addStrat, attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:6px 12px; border-radius:6px; cursor:pointer;" } });
+    rBtn.onclick = () => { state.strategies.push(`S${state.strategies.length + 1}`); onStateChange(); };
+    const cBtn = btnRow.createEl("button", { text: t.addOpp, attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:6px 12px; border-radius:6px; cursor:pointer;" } });
+    cBtn.onclick = () => { state.opponents.push(`O${state.opponents.length + 1}`); onStateChange(); };
   }
 
   const table = mCard.createEl("table", { cls: "ea-matrix-table" });
   const hRow = table.createEl("tr");
-  hRow.createEl("th", { cls: "ea-matrix-th", text: "Oyuncu 1 \\ 2" });
+  hRow.createEl("th", { cls: "ea-matrix-th", text: "1 \\ 2" });
   state.opponents.forEach((opp, cIdx) => {
     const th = hRow.createEl("th", { cls: "ea-matrix-th" });
     if (isInteractive) {
@@ -256,22 +340,36 @@ function renderCardsDOM(container, state, isInteractive = false, onStateChange =
   });
 
   const footer = mCard.createDiv({ attr: { style: "margin-top:14px; text-align:center; font-size:0.85rem; color:var(--ea-text-sub);" } });
-  footer.innerHTML = `● <span style="color:var(--ea-green); font-weight:bold;">Oyuncu 1'in getirisi</span> &nbsp;&nbsp;&nbsp;&nbsp; ● <span style="color:var(--ea-blue); font-weight:bold;">Oyuncu 2'nin getirisi</span>`;
+  footer.innerHTML = `● <span style="color:var(--ea-green); font-weight:bold;">${t.p1Legend}</span> &nbsp;&nbsp;&nbsp;&nbsp; ● <span style="color:var(--ea-blue); font-weight:bold;">${t.p2Legend}</span>`;
 }
 
 class GameTheoryView extends ItemView {
   constructor(leaf) {
     super(leaf);
-    this.state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    this.state = this.loadInitialState('tr');
+  }
+
+  loadInitialState(lang) {
+    const t = TRANSLATIONS[lang];
+    return {
+      lang: lang,
+      title: t.title,
+      unitSymbol: "",
+      categories: JSON.parse(JSON.stringify(t.defaultCategories)),
+      strategies: [...t.strategies],
+      opponents: [...t.opponents],
+      selectedCell: "0-0"
+    };
   }
 
   getViewType() { return VIEW_TYPE_GAME_THEORY; }
-  getDisplayText() { return "Oyun Teorisi Matrisi"; }
+  getDisplayText() { return "Payoff Ledger"; }
   getIcon() { return "dice"; }
 
   async onOpen() { this.render(); }
 
   render() {
+    const t = TRANSLATIONS[this.state.lang || 'tr'];
     const container = this.containerEl.children[1];
     container.empty();
     container.addClass("ea-container-isolated");
@@ -282,11 +380,24 @@ class GameTheoryView extends ItemView {
     tInp.value = this.state.title;
     tInp.oninput = (e) => { this.state.title = e.target.value; };
 
-    // 2. Satır: Döviz Seçici + Butonlar
-    const controlRow = container.createDiv({ attr: { style: "display:flex; gap:10px; margin-bottom:20px; align-items:center;" } });
+    // 2. Satır: Dil Seçici + Döviz Seçici + Butonlar
+    const controlRow = container.createDiv({ attr: { style: "display:flex; gap:10px; margin-bottom:20px; align-items:center; flex-wrap:wrap;" } });
 
+    // Dil Seçici (TR / EN)
+    const langSelect = controlRow.createEl("select", { cls: "ea-unit-select" });
+    [ { label: "🇹🇷 TR", val: "tr" }, { label: "🇬🇧 EN", val: "en" } ].forEach(opt => {
+      const el = langSelect.createEl("option", { text: opt.label, value: opt.val });
+      if (opt.val === this.state.lang) el.selected = true;
+    });
+    langSelect.onchange = (e) => {
+      const newLang = e.target.value;
+      this.state = this.loadInitialState(newLang);
+      this.render();
+    };
+
+    // Para Birimi Dropdown
     const unitSelect = controlRow.createEl("select", { cls: "ea-unit-select" });
-    CURRENCY_OPTIONS.forEach(opt => {
+    t.currencies.forEach(opt => {
       const optionEl = unitSelect.createEl("option", { text: opt.label, value: opt.symbol });
       if (opt.symbol === this.state.unitSymbol) optionEl.selected = true;
     });
@@ -295,18 +406,18 @@ class GameTheoryView extends ItemView {
       this.render();
     };
 
-    const clearBtn = controlRow.createEl("button", { text: "Boş Tuval", attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:8px 14px; border-radius:8px; cursor:pointer;" } });
+    const clearBtn = controlRow.createEl("button", { text: t.clearBtn, attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:8px 14px; border-radius:8px; cursor:pointer;" } });
     clearBtn.onclick = () => {
       this.state.categories = [];
-      this.state.strategies = ["A Planı", "B Planı"];
-      this.state.opponents = ["Durum 1", "Durum 2"];
+      this.state.strategies = ["A", "B"];
+      this.state.opponents = ["1", "2"];
       this.state.selectedCell = "0-0";
       this.render();
     };
 
-    const resetBtn = controlRow.createEl("button", { text: "Şablonu Yükle", attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:8px 14px; border-radius:8px; cursor:pointer;" } });
+    const resetBtn = controlRow.createEl("button", { text: t.templateBtn, attr: { style: "background:var(--ea-item-bg); color:#fff; border:1px solid var(--ea-card-border); padding:8px 14px; border-radius:8px; cursor:pointer;" } });
     resetBtn.onclick = () => {
-      this.state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      this.state = this.loadInitialState(this.state.lang);
       this.render();
     };
 
@@ -314,23 +425,24 @@ class GameTheoryView extends ItemView {
 
     // Yeni Kategori Kartı Butonu
     const addCatBtn = container.createEl("button", {
-      text: "+ Yeni Kategori Kartı Ekle",
+      text: t.newCategory,
       attr: { style: "width:100%; padding:14px; border-radius:12px; background:transparent; border:1.5px dashed var(--ea-card-border); color:var(--ea-text-sub); cursor:pointer; margin-top:14px; font-weight:700;" }
     });
     addCatBtn.onclick = () => {
-      this.state.categories.push({ id: "c_" + Date.now(), title: "Yeni Karar Boyutu", totalLabel: "Toplam", isPositive: true, items: [] });
+      this.state.categories.push({ id: "c_" + Date.now(), title: "Yeni Boyut / Dimension", totalLabel: t.totalDefault, isPositive: true, items: [] });
       this.render();
     };
 
     // Şablonu Kaydet Butonu
     const saveBtn = container.createEl("button", {
-      text: "Şablonu Kaydet",
+      text: t.saveBtn,
       attr: { style: "width:100%; padding:14px; border-radius:12px; background:var(--ea-green); color:#000; font-weight:800; border:none; cursor:pointer; margin-top:20px; font-size:1rem;" }
     });
     saveBtn.onclick = () => this.saveDoc();
   }
 
   async saveDoc() {
+    const t = TRANSLATIONS[this.state.lang || 'tr'];
     const fileName = `${this.state.title.replace(/[/\\?%*:|"<>]/g, '-')}.md`;
 
     const categoriesMd = this.state.categories.map((cat, idx) => {
@@ -346,14 +458,14 @@ class GameTheoryView extends ItemView {
       }).join('\n');
 
       return `### ${idx + 1}. ${cat.title}
-> ${cat.isPositive ? '**AVANTAJLAR**' : '**DÖNÜŞÜM MALİYETLERİ**'}
+> ${cat.isPositive ? `**${t.advLabel}**` : `**${t.costLabel}**`}
 ${itemsList}
 > 
-> **${cat.totalLabel || 'Toplam'}:** \`${sign}\`
+> **${cat.totalLabel || t.totalDefault}:** \`${sign}\`
 `;
     }).join('\n---\n\n');
 
-    const tableHeader = `| Sen \\ Çevre | ` + this.state.opponents.join(' | ') + ' |';
+    const tableHeader = `| 1 \\ 2 | ` + this.state.opponents.join(' | ') + ' |';
     const tableDivider = `| :--- | ` + this.state.opponents.map(() => ':---:').join(' | ') + ' |';
     
     const tableRows = this.state.strategies.map((strat, rIdx) => {
@@ -372,7 +484,8 @@ ${itemsList}
     const fullContent = `---
 type: game-theory-analysis
 title: "${this.state.title}"
-unit: "${this.state.unitSymbol || 'Puan'}"
+unit: "${this.state.unitSymbol || 'Score'}"
+lang: "${this.state.lang}"
 date: ${new Date().toISOString().split('T')[0]}
 selected_cell: "${this.state.selectedCell}"
 ---
@@ -383,15 +496,15 @@ ${categoriesMd}
 
 ---
 
-### Payoff (Getiri) Matrisi
-*Hücre formatı: (Senin Getirin , Dış Faktörün Getirisi)*
-*Seçili Denge Noktası: **★** ile işaretlenmiştir.*
+### ${t.matrixTitle}
+*Format: (Player 1 , Player 2)*
+*★ = Selected Equilibrium*
 
 ${tableHeader}
 ${tableDivider}
 ${tableRows}
 
-> **Not:** Analizdeki getiri dengesi ve maliyetler Oyun Teorisi Motoru ile hesaplanmıştır.
+> **Note:** ${t.matrixFootnote}
 `;
 
     const file = this.app.vault.getAbstractFileByPath(fileName);
@@ -400,21 +513,21 @@ ${tableRows}
     } else {
       await this.app.vault.create(fileName, fullContent);
     }
-    new Notice(`Şablon temiz ve birim eklenmiş olarak kaydedildi: ${fileName}`);
+    new Notice(`${t.savedNotice} ${fileName}`);
   }
 }
 
 module.exports = class GameTheoryPlugin extends Plugin {
   async onload() {
     this.registerView(VIEW_TYPE_GAME_THEORY, (leaf) => new GameTheoryView(leaf));
-    this.addRibbonIcon("dice", "Oyun Teorisi Karar Motoru", () => this.activateView());
+    this.addRibbonIcon("dice", "Payoff Ledger", () => this.activateView());
 
     this.registerMarkdownCodeBlockProcessor("game-theory", (source, el, ctx) => {
       try {
         const state = JSON.parse(source);
         renderCardsDOM(el, state, false);
       } catch (e) {
-        el.createEl("pre", { text: "Geçersiz Oyun Teorisi Verisi." });
+        el.createEl("pre", { text: "Geçersiz Payoff Ledger verisi." });
       }
     });
   }
