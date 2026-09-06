@@ -4,55 +4,44 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square)](https://github.com/kurnazsemih71/payoff-ledger-obsidian/pulls)
 
-**Payoff Ledger** is an analytical decision-making and quantitative modeling plugin for Obsidian. It bridges the gap between **Game Theory payoff matrices** and **multi-currency ledger accounting**, allowing you to calculate complex trade-offs, weigh guaranteed baseline returns against friction costs, and balance financial budgets directly inside your vault.
+**Payoff Ledger** is a highly flexible, quantitative decision-making and financial ledger plugin for Obsidian. It bridges the gap between **Game Theory payoff matrices** and **multi-currency accounting**, allowing you to calculate complex trade-offs, balance budgets, and simulate friction costs directly inside your vault.
+
+Because every user's needs are different, **Payoff Ledger imposes zero rigid structures**. Whether you are an IT professional calculating hardware markup, a gamer calculating MMORPG slot efficiency, or a strategist evaluating market expansion, the UI is entirely adaptable to your context.
 
 ---
 
-## 📸 Visual Workflow & Interface
+## 📸 Visual Workflow & Fully Editable Interface
 
-The split-view workflow enables quick configuration of ledger dimensions, parameters, and matrix models on the right, with non-destructive, theme-native Markdown notes compiled on the left.
+Configure your ledger dimensions, toggle parameters, and let the plugin calculate net outcomes. Compile non-destructive, theme-native Markdown notes directly into your vault.
 
+![Payoff Ledger Split-View Workflow](preview1.png)
 ![Payoff Ledger Split-View Workflow](preview.png)
 
 ---
 
-## 💡 The Core Problem It Solves
+## ✨ Key Features & New Updates
 
-Traditional decision tools evaluate options in static isolation (e.g., pros and cons). They fail to model systems where:
-
-1. **Outcomes depend on external factors:** Market cycles, client reactions, competitor moves, or infrastructure limits.
-2. **Status Quo carries hidden value:** The institutional inertia of maintaining current systems often outweighs raw speculative upside.
-3. **Execution has friction:** Capital expenditure, cognitive burnout, and learning curves penalize initiatives before returns materialize.
-
-**Payoff Ledger** organizes these variables into an interactive, quantifiable $N \times M$ matrix to identify viable options and equilibrium traps.
+- **Fully Editable UI Labels:** Click and edit *any* column header. Change "EXPENSE / COST" to "Net Profit", "Friction", or "Sarfiyat", and change "VALUE" to "Score" or "Adet". The ledger adapts to your vocabulary.
+- **Dynamic Color-Coded Totals:** Net total badges automatically react to your inputs—turning bright green for positive net gains and red for negative costs/losses.
+- **Dynamic Reactive Payoff Matrix:** Active positive items sum to green payoffs and negative friction items sum to red costs in the interactive $N \times M$ matrix.
+- **Optional Matrix Display (Toggle):** Hide the game theory matrix via the top toolbar (`🎲 Matrix: Off`) to use the plugin as a pure, clean financial ledger.
+- **Auto-Expanding Numeric Inputs:** Pill badges expand dynamically to accommodate large numbers, featuring localized thousands separators (e.g., `2,500,000.50 $` or `2.500.000,50 ₺`).
+- **Editable Matrix Labels & Legends:** Direct inline editing for matrix explanatory subtitles and quadrant legends.
+- **Multi-Currency & i18n Support:** Instant toggle between English (EN) and Turkish (TR), with full decimal support for `₺`, `$`, `€`, `£`, or raw points.
 
 ---
 
-## 🎯 Practical Presets & Use Cases
+## 🎯 Practical Presets Library
 
-Payoff Ledger includes ready-to-use scenario presets:
+Load pre-configured templates with a single click:
 
 | Preset | Operational Domain | Modeled Balance |
 | :--- | :--- | :--- |
 | **🎲 Strategic Decision Matrix** | Strategy & Business | Status Quo Floor vs. Market Expansion Upside |
-| **🔧 Tech Service & Repair** | Hardware & IT Services | Labor & Part Revenue vs. Consumables & Warranty Risk |
-| **⚔️ Game Farm & Efficiency** | MMORPG / Gaming Economy | Loot & Drop Value vs. Potion, Automation & Time Depreciation |
-| **🚗 Fuel & Mileage Tracking** | Travel & Logistics | Transport Utility vs. Fuel, Tolls & Maintenance Amortization |
+| **🔧 Tech Service & Repair** | Hardware & IT Services | Labor & Part Revenue vs. Consumables & Risk |
+| **⚔️ Game Farm & Efficiency** | MMORPG / Gaming Economy | Loot & Drop Value vs. Potion, Automation & Time |
+| **🚗 Fuel & Mileage Tracking** | Travel & Logistics | Transport Utility vs. Fuel, Tolls & Maintenance |
 | **💻 Hardware Purchase Filter** | Capital & Equipment | Workflow Acceleration vs. Cash Flow & Debt Exposure |
-
----
-
-## ✨ Key Features
-
-- **Dynamic Reactive Payoff Matrix:** Real-time aggregation where active positive items sum to green payoffs and negative friction items sum to red costs.
-- **Optional Matrix Display (Toggle):** Matrix section can be hidden via top toolbar button (`🎲 Matrix: On/Off`) for plain financial ledger accounting.
-- **Preset Engine:** One-click loading of scenario configurations (Tech Service, Gaming, Travel, Hardware, Strategy).
-- **Auto-Expanding Numeric Inputs:** Pill badge inputs expand dynamically to accommodate large numbers (supports up to `999,999,999` with localized comma/dot formatting).
-- **Expanded Strategy Rows:** Multi-line textareas for strategy labels with inline delete controls.
-- **Editable Matrix Labels & Legends:** Direct inline editing for matrix explanatory text and quadrant legends.
-- **Multi-Currency & Floating-Point Engine:** Full decimal support with selectable currency/unit symbols (`₺`, `$`, `€`, `£`, or raw points).
-- **Multi-Language Architecture (i18n):** Instant toggle between English (EN) and Turkish (TR).
-- **Clean Markdown Export:** Exports human-readable Markdown summaries with YAML metadata and no `line-through` strike-through artifacts.
 
 ---
 
@@ -70,43 +59,34 @@ Payoff Ledger includes ready-to-use scenario presets:
 
 ---
 
-## 📄 Output Preview
+## 📄 Clean Markdown Export
 
-When exported, Payoff Ledger generates a clean Markdown report:
+When saved, Payoff Ledger generates a clean, readable Markdown report with zero formatting artifacts:
 
 ```markdown
-# Tech Service & Hardware Repair Ledger
-
-### 1. Service Revenues
-> **INCOME / ADVANTAGE**
-> ✔ Labor and diagnostic fee `+650 ₺`
-> ✔ Hardware markup margin `+1,200 ₺`
+### 3. Net Profit
+> **Net**
+> ✔ Total Revenue `+350 $`
+> ✔ Total Cost `-145 $`
 > 
-> **Total Revenue:** `+1,850 ₺`
-
----
-
-### 2. Parts & Operational Costs
-> **EXPENSE / COST**
-> ✔ Replacement parts cost `-850 ₺`
-> ✔ Bench testing electricity and time `-45 ₺`
-> 
-> **Total Cost:** `-895 ₺`
+> **Total:** `+205 $`
 ```
 
 ---
 
 ## 🤝 Contributing & Planned Enhancements
 
-Payoff Ledger is open-source and open to contributions. Key roadmap areas include:
+Payoff Ledger is open-source and ready for modular expansion. Future roadmap areas include:
 
-- [ ] **Automated Nash Equilibrium Solver:** Mathematical detection of Pure/Mixed Strategy Nash Equilibria and Minimax solutions.
+- [ ] **Automated Nash Equilibrium Solver:** Mathematical detection of Pure/Mixed Strategy Nash Equilibria.
 - [ ] **TypeScript & Build Pipeline:** Migration of `main.js` to modular TypeScript (`src/`) with `esbuild`.
 - [ ] **Interactive Codeblock Parser:** Live score adjustments directly within Markdown Reading View.
 - [ ] **Dataview / Canvas Integration:** Queryable metadata outputs and visual Canvas node bridges.
+
+Feel free to open an **[Issue](https://github.com/kurnazsemih71/payoff-ledger-obsidian/issues)** for feature requests or bug reports!
 
 ---
 
 ## 📝 License
 
-Distributed under the [MIT License](LICENSE). Maintained by the open-source community.
+Distributed under the [MIT License](LICENSE). Maintained by the open-source community. Designed for strategic thinkers, vault architects, and operational managers.

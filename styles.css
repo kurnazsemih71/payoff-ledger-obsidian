@@ -28,7 +28,7 @@
   box-sizing: border-box !important;
 }
 
-/* Genel Odaklanma (Focus) Efekti - Beyazımsı/Açık Mavi Çerçeve */
+/* Genel Odaklanma (Focus) Efekti */
 .ea-container-isolated input:focus,
 .ea-container-isolated textarea:focus {
   outline: none !important;
@@ -81,7 +81,7 @@
   margin-top: 2px !important;
 }
 
-/* Kart Başlığı (Taşmayan ve Aşağı Kayan Dinamik Alan) */
+/* Kart Başlığı */
 .ea-title-area {
   flex: 1 !important;
   background: transparent !important;
@@ -102,21 +102,51 @@
   transition: all 0.15s ease !important;
 }
 
+/* Tıklama Sorununu Çözen Sütun Başlıkları Şeridi */
 .ea-col-labels {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  color: var(--ea-text-sub) !important;
-  font-size: 0.76rem !important;
-  letter-spacing: 0.14em !important;
-  font-weight: 800 !important;
-  text-transform: uppercase !important;
-  padding-bottom: 8px !important;
+  padding-bottom: 6px !important;
   border-bottom: 1px solid var(--ea-card-border) !important;
   margin-bottom: 10px !important;
+  position: relative !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  user-select: auto !important;
 }
 
-/* Parametre Satırı (Onmouseover ve Tam Hizalama) */
+/* Doğrudan Düzenlenebilir Sütun Başlık Kutuları */
+.ea-col-label-input {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: var(--ea-text-sub) !important;
+  font-size: 0.76rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  outline: none !important;
+  cursor: text !important;
+  transition: all 0.15s ease !important;
+  pointer-events: auto !important;
+}
+
+.ea-col-label-input:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #ffffff !important;
+}
+
+.ea-col-label-input:focus {
+  border-color: #58a6ff !important;
+  background: #0d1117 !important;
+  color: #58a6ff !important;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.35) !important;
+}
+
+/* Parametre Satırı */
 .ea-row {
   display: flex !important;
   align-items: center !important;
@@ -143,7 +173,7 @@
   align-self: center !important;
 }
 
-/* Dinamik Aşağı Kayan Parametre Metni */
+/* Parametre Metni */
 .ea-text-area {
   flex: 1 !important;
   background: transparent !important;
@@ -164,6 +194,7 @@
   transition: all 0.15s ease !important;
 }
 
+/* Değer Rozetleri */
 .ea-pill {
   padding: 5px 12px !important;
   border-radius: 20px !important;
@@ -193,7 +224,7 @@
   border-color: var(--ea-red-border) !important;
 }
 
-/* × ve + Butonları (Okunabilir, Hızlı Animasyonlu ve Parametre Hover Efektli) */
+/* Aksiyon Butonları */
 .ea-btn-action {
   background: var(--ea-item-bg) !important;
   border: 1px solid var(--ea-card-border) !important;
@@ -282,7 +313,7 @@
   box-shadow: 0 0 16px rgba(46, 160, 67, 0.35) !important;
 }
 
-/* Para Birimi / Birim Dropdown Stili */
+/* Açılır Menüler */
 .ea-unit-select {
   background: var(--ea-card-bg) !important;
   color: var(--ea-text-main) !important;
@@ -301,7 +332,7 @@
   border-color: var(--ea-green) !important;
 }
 
-/* Matris Sol Strateji Başlığı (Genişletilmiş Alan) */
+/* Matris Sol Strateji Başlığı */
 .ea-matrix-strat-th {
   width: 220px !important;
   min-width: 180px !important;
