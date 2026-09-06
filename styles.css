@@ -174,7 +174,9 @@
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
-  width: 58px !important;
+  min-width: 65px !important;
+  max-width: 160px !important;
+  width: auto !important;
   border: 1px solid transparent !important;
   transition: all 0.15s ease !important;
 }
@@ -297,4 +299,56 @@
 .ea-unit-select:focus,
 .ea-unit-select:hover {
   border-color: var(--ea-green) !important;
+}
+
+/* Matris Sol Strateji Başlığı (Genişletilmiş Alan) */
+.ea-matrix-strat-th {
+  width: 220px !important;
+  min-width: 180px !important;
+  max-width: 260px !important;
+  background: var(--ea-item-bg) !important;
+  border: 1px solid var(--ea-card-border) !important;
+  border-radius: 10px !important;
+  padding: 8px 10px !important;
+  vertical-align: middle !important;
+}
+
+.ea-matrix-strat-area {
+  width: 100% !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: var(--ea-text-main) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  resize: none !important;
+  outline: none !important;
+  line-height: 1.35 !important;
+  padding: 4px !important;
+  border-radius: 6px !important;
+}
+
+/* Matris Hücre İçi Sayı Girdileri */
+.ea-cell-val-input {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+  width: 90px !important;
+  border-radius: 6px !important;
+  outline: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.ea-cell-val-green {
+  color: var(--ea-green) !important;
+}
+
+.ea-cell-val-red {
+  color: var(--ea-red) !important;
+}
+
+.ea-cell-val-input:focus {
+  border-color: #58a6ff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
 }
